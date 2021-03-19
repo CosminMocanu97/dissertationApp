@@ -1,0 +1,13 @@
+/* CONTAINER CSS FOR: REGISTER, LOGIN, FORGETPASSWORD, FORGETPASSWORD CONFIRMATION*/
+.AppContainer {
+    overflow:hidden;
+    overflow-y:visible;
+    height:100%;
+    width:100%;
+    background-color: #282c34;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    display:flex;
+    flex-direction: column;
+  }
