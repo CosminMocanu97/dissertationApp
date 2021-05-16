@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import '../../stylesheets/registerPage.css'
 import '../../stylesheets/common.css'
 import ReCAPTCHA from "react-google-recaptcha"
+import { axiosWrapper } from "../../utils/axiosWrapper"
 
 const EMAIL_REGEX = RegExp(/^[a-zA-Z0-9.!#$%&_]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/)
 const minPasswordLength = 6
@@ -100,9 +101,31 @@ export class Register extends Component {
         item.formValidation.captchaValidation = ""
       }
     } else {
-      alert("Register succesful!")
-      resetForm(this.state)
-      window.grecaptcha.reset()
+
+      const data = {
+        email: this.state.email,
+        password: this.state.password,
+        phoneNumber: this.state.phoneNo
+      }
+
+      axiosWrapper.post(`/register`, data)
+        .then(res => {
+          localStorage.setItem("user_email", data.email)
+          window.location = "/waitAccountActivation"
+        })
+        .catch(error => {
+          localStorage.setItem("user_email", data.email)
+          // if the email already exists, redirect to a page telling that
+          if (error.response.status === 400) {
+            window.location = "/error"
+          } else if (error.response.status === 409) {
+            resetForm(this.state)
+            window.grecaptcha.reset()
+            this.setState({ userAlreadyExists: true })
+          } else {
+            window.location = "/error"
+          }
+        })
     }
   }
 

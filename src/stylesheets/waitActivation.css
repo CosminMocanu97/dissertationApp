@@ -1,0 +1,54 @@
+/* White div styling - (App) */
+.AppWaitActivation {
+    border-radius: 10px;
+    padding: 20px !important;
+    box-shadow: 0 0 2px black;
+    animation-name: formAnimation;
+    animation-duration: 1.5s;
+    animation-delay: 0s;
+    animation-fill-mode: none;
+  }
+  @keyframes formAnimation {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  .AppWaitActivation p {
+    font-size: 16px;
+  }
+  .AppWaitActivation span {
+    font-weight: bold;
+  }
+  /* syling for submit button */
+  .AppWaitActivation button {
+    width: 145px;
+    height: 38px;
+    border: none;
+    border-radius: 15px;
+    margin: 0 auto;
+    background-color: #001f3f;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .AppWaitActivation button:hover {
+    background-color: rgb(16, 16, 255);
+  }
+  .AppWaitActivation button:focus {
+    outline: none;
+  }
+  
+  .AppWaitActivation .redirectDiv {
+    display: flex;
+    justify-content: flex-end;
+  }
+  /*changes for the mobile view for devices lower than 900px height and 500px width */
+  @media (max-width: 799px) {
+    .AppWaitActivation {
+      width: 90vw;
+    }
+  }
+  

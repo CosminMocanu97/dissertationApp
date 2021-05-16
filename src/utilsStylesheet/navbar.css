@@ -1,0 +1,229 @@
+.logoImg {
+    width:75px;
+    height:55px;
+    margin-left:20px;
+  }
+#active {
+  background-color: green;
+}
+#notActive {
+  display:none;
+}
+.navbarContainer {
+    background-color: #001F3F;
+    position:fixed !important;
+    width:100vw !important;
+    z-index:2000 !important;
+}
+/* Group and device buttons styling */
+.navbarContainer .allButtons {
+    background-color: #FFC85B;
+    color: #001F3F;
+    font-family: "Open Sans", Open-Sans, Sans-serif;
+    border-width: 0;
+    font-size:15px;
+    font-weight: bold;
+    height:35px;
+    margin-left:25px;
+    padding-left:12px;
+    padding-right: 12px;
+} 
+.navbarContainer .deviceBtn:hover, .navbarContainer .groupBtn:hover {
+  background-color: #3f51b5;
+  color: #fff;
+} 
+.navbarContainer .deviceBtn:focus, .navbarContainer .groupBtn:focus {
+  background-color: #FFC85B;
+  color: #001F3F;
+  box-shadow: none;
+} 
+.navbarContainer .deviceBtn {
+  margin-left:35px;
+}
+.navbarContainer .dropdown-menu {
+    left:auto;
+    right:0;
+    background-color: #f7f7f7;
+}
+/* logged user email / dropdown styling */
+.navbarContainer #loggeduserDropdown {
+    color:white;
+}
+.userDropdown {
+    position: relative;
+    font-size:16px;
+    margin-right:10px;
+    text-align: left;
+}
+.userDropdown .dropdown-menu a img {
+    margin-left:-8px;
+    margin-top:-2px;
+    margin-right:2px;
+    width:27px;
+    height:22px;
+}
+.userDropdown .dropdown-menu a{
+    margin-bottom:5px;
+}
+.dropdown-menu.show {
+    display:block;
+}
+.userDropdown .dropdown-menu a:hover{
+    background-color: #dddddd;
+}
+.userDropdown .dropdown-menu {
+    min-width: 10rem;
+    left:37%;
+    right: initial;
+}
+.notificationBell {
+    padding-right: 20px;
+}
+/* bell icon + dropdown styling */
+.notificationBell .dropdown-menu {
+    height:calc(80vh - 86px);
+    width:400px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.notificationBell .dropdown-menu::-webkit-scrollbar {
+  display: none !important;
+}
+.notificationBell .notificationContainer {
+    display:flex;
+    padding-left:30px; 
+    padding-top:20px;
+    padding-bottom:20px;
+}
+.notificationBell .notificationContainer img {
+    margin-right:25px;
+    height:45px;
+    width:45px;
+}
+.notificationBell .notificationContainer .infoContainer {
+    width:250px;
+    display:inline;
+    line-height:20px;
+}
+.notificationBell .notificationContainer .infoContainer span {
+    display:block;
+    font-size:15px;
+}
+.notificationBell .notificationContainer .infoContainer span:nth-child(2) {
+    display:block;
+    color:#cc3333;
+    font-size:15px;
+}
+.notificationBell .dropdown-toggle::after{
+    display:none;
+}
+  /* notification badge for bellicon styling */
+.badge {
+  padding: 3px 5px 2px;
+  position: fixed;
+  z-index: 9999;
+  top: 25px;
+  margin-left:28px;
+  display: inline-block;
+  min-width: 10px;
+  font-size: 2px;
+  font-weight: bold;
+  color: #ffffff;
+  line-height: 1;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-align: center;
+  border-radius: 10px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none; 
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
+}
+.navbarContainer .mobileButtons {
+  display: none;  
+} 
+
+  /* styling for devices with 992 width or lower - usually mobile and some tablets) */
+@media only screen and (max-width: 991.92px) { 
+  .navbarContainer .deviceBtn, .navbarContainer .groupBtn {
+    margin-left:0px;
+    margin-bottom:10px;
+    font-size:15px;
+  }
+  .notificationBell .notificationContainer {
+    display:flex;
+    padding-left:10vw; 
+    padding-top:20px;
+    padding-bottom:20px;
+  }
+  .notificationBell .notificationContainer img {
+    margin-right:30px;
+    height:60px;
+    width:60px;
+  }
+  .notificationBell .notificationContainer .infoContainer {
+    width:calc(100vw - 40%);
+    display:inline;
+    line-height:20px;
+  }
+  .notificationBell .notificationContainer .infoContainer span {
+    display:block;
+  }
+  .notificationBell .notificationContainer .infoContainer span:nth-child(2) {
+    display:block;
+    color:red;
+  }
+  .notificationBell .dropdown-menu {
+    top:67px;
+    width:100.3vw;
+    right:-72.5px;
+    height:calc(100vh - 79px);
+    padding-bottom:0px;
+    overflow-y: scroll;
+    -ms-overflow-style: none; 
+    scrollbar-width: none;  
+  }
+  .userDropdown {
+    margin-right:0px;
+  }
+  .navbarContainer .allButtons {
+    height:35px;
+    margin:0;
+    margin-top:10px;   
+    background-color: #001F3F;
+    color: #FFC85B;
+    border-color:#FFC85B;
+    border-width: 1px;
+  } 
+  .navbarContainer .mobileButtons {
+    display: block;  
+    height:35px;
+    margin:0;
+    margin-top:10px;  
+    background-color: #001F3F;
+    color: #FFC85B;
+    border-color:#FFC85B;
+    font-family: "Open Sans", Open-Sans, Sans-serif;
+    font-size:15px;
+    font-weight: bold;
+  } 
+  .navbarContainer #loggeduserDropdown {
+    text-align:center;
+  }
+  .notificationBell {
+    padding-right: 10px;
+  }
+}
+
+@media only screen and (max-width: 299px) { 
+  .logoImg {
+    width:65px;
+    height:55px;
+  }
+  .notificationBell {
+    padding-right: 5px;
+  }
+}

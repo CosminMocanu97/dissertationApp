@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import '../../stylesheets/forgotPasswordPage.css'
 import '../../stylesheets/common.css'
 import ReCAPTCHA from "react-google-recaptcha"
+import { axiosWrapper } from "../../utils/axiosWrapper"
 
 const EMAIL_REGEX = RegExp(/^[a-zA-Z0-9.!#$%&_]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/)
 
@@ -67,7 +68,17 @@ export class ForgotPassword extends Component {
         item.formValidation.captchaValidation = ""
       }
     } else {
-        window.location = "/confirmation"
+      const data = {
+        email: item.email
+      }
+      axiosWrapper.post("/forgot-password", data)
+        .then(res => {
+          localStorage.setItem("email", item.email)
+          window.location = "/confirmation"
+        })
+        .catch(error => {
+          window.location = "/error"
+        })
     }
   }
 

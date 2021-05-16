@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import '../../stylesheets/loginPage.css'
 import '../../stylesheets/common.css'
 import ReCAPTCHA from "react-google-recaptcha"
+import { axiosWrapper } from "../../utils/axiosWrapper"
 
 const EMAIL_REGEX = RegExp(/^[a-zA-Z0-9.!#$%&_]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/)
 const minPasswordLength = 6
@@ -91,9 +92,34 @@ export class Login extends Component {
         item.formValidation.captchaValidation = ""
       }
     } else {
-        alert("Login succesfull")
-        resetForm(this.state)
-        window.grecaptcha.reset()
+      const data = {
+        email: this.state.email,
+        password: this.state.password
+      };
+
+      axiosWrapper.post(`/login`, data)
+        .then(res => {
+          // if the user manages to log in, store his id and JWT to be used on all the pages and mark that there is an active session 
+          localStorage.setItem("session_active", true)
+          localStorage.setItem("user_id", res.data["id"])
+          localStorage.setItem("jwt", res.data["token"])
+          localStorage.setItem("user_email", data.email)
+          console.log(res.data)
+          window.location = "/user"
+        })
+        .catch(error => {
+          // if the credentials are invalid, redirect the user to the login page and tell them that the password or email are incorrect
+          if (error.response.status === 400 || error.response.status === 401) {
+            resetForm(this.state)
+            window.grecaptcha.reset()
+            this.setState({ authFailed: true })
+          } else if (error.response.status === 417) {
+            // todo: redirect to a page that says that the account is not activated and has a button to re-submit the activation email for am email written in a form
+            alert("contul dummneavoastra nu a fost activat")
+          } else {
+            window.location = "/error"
+          }
+        })
     }
   }
 
