@@ -1,0 +1,144 @@
+.deviceContainer {
+    overflow: hidden;
+    overflow-y: scroll;
+    background-color: #f5f5f5;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .deviceContainer .MuiSelect-select:focus {
+    background-color: rgba(0, 0, 0, 0) !important;
+  }
+  .deviceContainer button {
+    outline: none !important;
+  }
+  /* width and height for react APP */
+  .AppDevice {
+    width: 100%;
+    height: 100%;
+  }
+  /* loading circle showed when the page is loading */
+  .loadingDiv {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  /* table container styling (containing both tables) */
+  .details {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .deviceDetails {
+    line-height: 1.5;
+    width: 100%;
+    height: 100vh;
+    padding-top: 103px;
+    padding-left: 85px;
+    padding-bottom: 40px;
+  }
+  .detailsContainer .inputDetails {
+    width: 43%;
+    margin-right: 5%;
+    margin-bottom: 20px;
+    background-color: white;
+  }
+  .detailsContainer .inputDetails:focus {
+    outline: none;
+  }
+  .detailsContainer .activeIcon {
+    color: rgb(62, 167, 9);
+    font-size: 24px;
+    margin-right: calc(7% - 27px);
+  }
+  .detailsContainer .brokenIcon {
+    color: rgb(206, 9, 2);
+    font-size: 24px;
+    margin-right: calc(7% - 27px);
+  }
+  .detailsContainer .inactiveIcon {
+    color: #f57c00;
+    font-size: 24px;
+    margin-right: calc(7% - 27px);
+  }
+  .detailsContainer .MuiOutlinedInput-adornedEnd {
+    padding-right: 0 !important;
+  }
+  .detailsContainer .MuiInputAdornment-root {
+    position: absolute;
+    right: 33px;
+  }
+  .deviceMap {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 90%;
+    height: 50%;
+  }
+  .deviceContainer .sectionTitle {
+    font-size: 24px;
+    margin-bottom: 10px;
+    margin-left: 2px;
+  }
+
+  /* delete button for schedule */
+  .AppDevice .MuiButtonBase-rootn{
+    display: inline-flex !important;
+    vertical-align: top;
+  }
+  /* some workaround for a bug in Material Ui helperText for FormControl */
+  .detailsContainer .MuiFormHelperText-root {
+    background-color: #f5f5f5;
+    margin: 0px;
+    padding-left: 5px;
+  }
+  .deviceContainer .MuiFormHelperText-contained {
+    margin: 0;
+    padding-left: 5px;
+    background-color: #f5f5f5;
+  }
+
+  /* styling for devices with 992 width or lower - usually mobile and some tablets) */
+  @media only screen and (max-width: 991.92px) {
+    .deviceDetails {
+      padding-left: 20px;
+      padding-right: 20px;
+      width: 100%;
+    }
+    .detailsContainer .inputDetails {
+      width: 100%;
+      margin-right: 0;
+    }
+    .detailsContainer .checkIcon {
+      margin-right: 0;
+    }
+    .detailsContainer .errorIcon {
+      margin-right: 0;
+    }
+    .deviceMap {
+      width: 100%;
+    }
+    .deviceDetails {
+      height: 1300px;
+    }
+    .AppDevice .divider {
+      position: relative;
+      height: 1px;
+      width: 100%;
+      left: 0%;
+      margin-top: 0px;
+      margin-bottom: 20px;
+    }
+  }
+  /* styling for devices with 992 width or lower - usually mobile and some tablets) */
+  @media only screen and (max-width: 349px) {
+    .deviceDetails {
+      height: 1250px;
+    }
+    .deviceMap {
+      height: 45%;
+    }
+    .deviceContainer .sectionTitle {
+      font-size: 20px;
+    }
+  }

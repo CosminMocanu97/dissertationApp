@@ -1,6 +1,6 @@
 .logoImg {
     width:75px;
-    height:55px;
+    height:75px;
     margin-left:20px;
   }
 #active {
@@ -52,7 +52,7 @@
 .userDropdown {
     position: relative;
     font-size:16px;
-    margin-right:10px;
+    margin-right:30px;
     text-align: left;
 }
 .userDropdown .dropdown-menu a img {

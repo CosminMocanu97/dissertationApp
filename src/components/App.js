@@ -9,6 +9,7 @@ import activateAccountPage from './activateAccountPage/activateAccountPage'
 import inexistentPage from './inexistingPage/inexistingPage'
 import loggedUserPage from './loggedUserPage/loggedUserPage'
 import resetPassPage from './resetPasswordPage/resetPasswordPage'
+import FileModificationPage from './modifyFilePage/fileModification'
 
 function ApplicationRoutes() {
   return (
@@ -23,6 +24,7 @@ function ApplicationRoutes() {
         <Route path="/user" exact component={loggedUserPage} />
         <Route path="/waitAccountActivation" exact component={waitAccountActivationPage} />
         <Route path="/renew-password/:token" exact component={resetPassPage} />
+        <Route path="/file" exact component={FileModificationPage} />
         <Route path='*' component={inexistentPage} />
     </Switch> 
     </Router>
