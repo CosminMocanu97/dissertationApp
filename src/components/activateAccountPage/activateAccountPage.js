@@ -37,13 +37,13 @@ const ActivateAccount = (props) => {
         return (
             <div className="AppContainer">
                 <Alert variant="success" className="alertContainer">
-                    <Alert.Heading> Succes </Alert.Heading>
+                    <Alert.Heading> Success </Alert.Heading>
                     <p>
-                        Contul a fost activat cu succes, vă puteți autentifica!
+                        The account was successfully activated, you can now log in!
                     </p>
                     <hr />
                     <div className="redirectDiv">
-                        <a href="/login"> <button type="button"> Intră în cont </button> </a>
+                        <a href="/login"> <button type="button"> Log in </button> </a>
                     </div>
                 </Alert>
             </div>
@@ -53,9 +53,9 @@ const ActivateAccount = (props) => {
         return (
             <div className="AppContainer">
                 <Alert variant="danger" className="alertContainer">
-                    <Alert.Heading> Token invalid </Alert.Heading>
+                    <Alert.Heading> Invalid token </Alert.Heading>
                     <p>
-                        Link-ul de activare a fost invalid sau a expirat, contul nu a fost activat!
+                        The activation link is invalid or it expired, the account was not activated!
                     </p>
                     <hr />
                     <div className="redirectDiv">

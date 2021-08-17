@@ -1,0 +1,76 @@
+/* css for popout forms for add device/groups/add new admin/ add device admin */
+.popoutContainer .MuiDialogContent-root {
+    padding: 0px 27px;
+    padding-bottom: 20px;
+  }
+  .popoutContainer .MuiDialogActions-root {
+    padding: 10px 27px;
+    padding-top:0px;
+  }
+  .popoutContainer .MuiDialogContentText-root {
+    padding: 5px 28px;
+    font-size: 15px;
+    margin-bottom: -3px;
+    margin-top: 5px;
+  }
+  .popoutContainer .MuiDialogTitle-root {
+    padding: 15px 28px;
+    padding-bottom: 0px;
+  }
+  .popoutContainer .MuiDialog-paper {
+    margin: 20px;
+  }
+  .popoutContainer .MuiFormHelperText-marginDense {
+    margin-top:2px;
+  }
+  .popoutContainer .MuiDialog-paperScrollPaper {
+    min-width: 470px;
+  }
+  .popoutContainer .MuiDialog-paperWidthSm {
+    max-width: 400px !important;
+  }
+  .popoutContainer {
+    z-index: 2100 !important;
+  }
+  .popoutContainer .MuiFormHelperText-contained {
+    margin-left: 2px;
+  }
+  .popoutContainer .MuiButtonBase-root {
+    display: inline-flex !important;
+  }
+  .popoutContainer .MuiFormHelperText-root {
+    font-size: 13px;
+  }
+  .popoutContainer .MuiFormControl-root {
+    width:100%;
+  }
+  .popoutContainer .lockImg {
+    height:35px;
+    width:35px;
+    margin-top:-12px;
+    margin-left: -3px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .popoutContainer .MuiDialogContent-root {
+      padding: 0px 15px;
+    }
+    .popoutContainer .MuiDialogTitle-root {
+      padding: 15px 17px;
+      padding-bottom: 0px;
+    }
+    .popoutContainer .MuiDialog-paperScrollPaper {
+      height: auto;
+      min-width: 90%;
+    }
+    .popoutContainer .MuiDialogActions-root {
+      padding: 10px 15px;
+    }
+    .popoutContainer .MuiDialogContentText-root {
+      padding: 0px 17px;
+      font-size: 15px;
+    }
+    .popoutContainer .MuiDialog-paper {
+      margin: 10px;
+    }
+  }

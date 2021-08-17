@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
+import { axiosWrapper } from "../../utils/axiosWrapper"
 import '../../stylesheets/registerPage.css'
 import '../../stylesheets/common.css'
-import ReCAPTCHA from "react-google-recaptcha"
-import { axiosWrapper } from "../../utils/axiosWrapper"
+import RegisterPageHTML from "./registerPage.html"
+import { Redirect } from 'react-router'
 
-const EMAIL_REGEX = RegExp(/^[a-zA-Z0-9.!#$%&_]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/)
 const minPasswordLength = 6
+const EMAIL_REGEX = RegExp(/^[a-zA-Z0-9.!#$%&_]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/)
 
 /* function used regarding form validation, checks if the inputs are empty or there are errors and returns false 
 otherwise returns true and the form is submitted.*/
@@ -22,155 +23,142 @@ export function formValid({ formValidation, email, password, repeatPassword, isV
   }
   return valid
 }
-/* A function that resets the form if the user changes the language */
-function resetForm(param) {
-  param.formValidation.captchaValidation = ""
-  param.formValidation.emailValidation = ""
-  param.formValidation.passwordValidation = ""
-  param.formValidation.repeatPasswordValidation = ""
-  param.email = ""
-  param.password = ""
-  param.repeatPassword = ""
-  param.isVerified = false
-}
 
-export class Register extends Component {
-  /* It used for initializing the local state of the component by assigning an object to this.state.
-     It used for binding event handler methods that occur in your component. */
-  constructor(props) {
-    //used to acces variables from the parent class, in this case we need it in order to use this.state
-    super(props)
-
-    this.state = {
-      //userAlreadyExists: false,
-      formValidation: {
-        captchaValidation: "",
-        emailValidation: "",
-        passwordValidation: "",
-        repeatPasswordValidation: "",
-      },
-      isVerified: false,
-      email: "",
-      password: "",
-      repeatPassword: "",
+function Register() {
+    const [userAlreadyExists, setUserAlreadyExists] = useState(false)
+    const defaultErrors = {
+      captchaValidation: "",
+      emailValidation: "",
+      passwordValidation: "",
+      repeatPasswordValidation: ""
     }
+    const [isVerified, setIsVerified] = useState(false)
+    // state for email input that updates on change
+    const [email, setEmail] = useState("")
+    // state for password input that updates on change
+    const [password, setPassword] = useState("")
+    const [repeatPassword, setRepeatPassword] = useState("")
+    const [formValidation, setFormValidation] = useState(defaultErrors)
+    // state to hide/show the password
+    const [showPassword, setShowPassword] = useState(false)
+    // state to show the error page 
+    const [showErrorPage, setErrorPage] = useState(false)
+    // state to show the waitActivation page after registering 
+    const [showWaitActivationPage, setWaitActivationPage] = useState(false)
 
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.verifyCallback = this.verifyCallback.bind(this)
-    this.verifyExpired = this.verifyExpired.bind(this)
-  }
-
- // on submit function 
-  handleSubmit(event) {
-    const name = event.target.name
-    const value = event.target.value
-    const errorMessage = this.state.formValidation
-    const item = this.state
-
-    this.setState({ [name]: value })
+  // onSubmit validation - checks if all fields are completed correctly and if they are make post request with the data
+  const handleSubmit = (event) => {
     event.preventDefault()
+    const stateData = {
+      formValidation,
+      email,
+      password,
+      repeatPassword,
+      isVerified
+    }
+    let errors = {...formValidation}
 
-    if (!formValid(item)) {
+    if (!formValid(stateData)) {
 
-      if (EMAIL_REGEX.test(item.email)) {
-        errorMessage.emailValidation = ""
+      if (!EMAIL_REGEX.test(email.trim())) {
+        errors.emailValidation = "Invalid email address (e.g. example@domain.com)"
       }
       else {
-        errorMessage.emailValidation = "Emailul introdus este invalid"
+        errors.emailValidation = ""
       }
 
-      if (item.password.length >= minPasswordLength) {
-        errorMessage.passwordValidation = ""
+      if (password < minPasswordLength) {
+        errors.passwordValidation = "Password must be at least 6 characters long"
       }
       else {
-        errorMessage.passwordValidation = "Parola trebuie sa conțină minim 6 caractere"
+        errors.passwordValidation = ""
       }
 
-      if ( (item.repeatPassword === item.password) && (item.repeatPassword.length > 0) ) {
-        errorMessage.repeatPasswordValidation = ""
+      if (repeatPassword !== password || repeatPassword.length === 0) {
+        errors.repeatPasswordValidation = "This field is empty"
       }
       else {
-        errorMessage.repeatPasswordValidation = "Parola nu corespunde"
+        errors.repeatPasswordValidation = ""
       }
 
-      if (item.isVerified === false) {
-        item.formValidation.captchaValidation = "Trebuie să bifați căsuța captcha"
+      if (!isVerified) {
+        errors.captchaValidation = "Please check the captcha box"
       }
       else {
-        item.formValidation.captchaValidation = ""
+        errors.captchaValidation = ""
       }
-    } else {
+      setFormValidation(errors)
+    } 
 
+    else {
       const data = {
-        email: this.state.email,
-        password: this.state.password,
-        phoneNumber: this.state.phoneNo
+        email: email.trim(),
+        password: password
       }
-
       axiosWrapper.post(`/register`, data)
-        .then(res => {
+        .then(() => {
           localStorage.setItem("user_email", data.email)
-          window.location = "/waitAccountActivation"
+          setWaitActivationPage(true)
         })
         .catch(error => {
           localStorage.setItem("user_email", data.email)
-          // if the email already exists, redirect to a page telling that
-          if (error.response.status === 400) {
-            window.location = "/error"
-          } else if (error.response.status === 409) {
-            resetForm(this.state)
+          if (error.response.status === 409) {
+            resetForm()
             window.grecaptcha.reset()
-            this.setState({ userAlreadyExists: true })
-          } else {
-            window.location = "/error"
+            setUserAlreadyExists(true)
+          } 
+          else {
+            setErrorPage(true)
           }
         })
     }
   }
 
-  /* real time validation of the input fields. On every element on which we use onChange event, this function
-  keeps track of the value inside that element and updates STATE accordingly */
-  handleChange(event) {
+  /* On change function for real time validation of the input fields it also updates the state variables for the input with what the user types */
+  const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
-    const errorMessage = this.state.formValidation
-
-    this.setState({ [name]: value })
+    let errors = {...formValidation}
 
     switch (name) {
       case 'email':
-        if (EMAIL_REGEX.test(value)) {
-          errorMessage.emailValidation = ""
+        setEmail(value)
+        if (!EMAIL_REGEX.test(value.trim())) {
+          errors.emailValidation = "Invalid email address (e.g. example@domain.com)"
         }
         else {
-          errorMessage.emailValidation = "Emailul introdus este invalid"
+          errors.emailValidation = ""
         }
+        setFormValidation(errors)
         break
 
       case 'password':
-        if (value.length >= minPasswordLength) {
-          errorMessage.passwordValidation = ""
+        setPassword(value)
+        if (value.length < minPasswordLength) {
+          errors.passwordValidation = "Password must be at least 6 characters long"
         }
         else {
-          errorMessage.passwordValidation = "Parola trebuie sa conțină minim 6 caractere"
+          errors.passwordValidation = ""
         }
 
-        if (value === this.state.repeatPassword) {
-          errorMessage.repeatPasswordValidation = ""
+        if (value !== repeatPassword) {
+          errors.repeatPasswordValidation = "Password doesn't match"
         }
         else {
-          errorMessage.repeatPasswordValidation = "Parola nu corespunde"
+          errors.repeatPasswordValidation = ""
         }
+        setFormValidation(errors)
         break
 
       case 'repeatPassword':
-        if (value === this.state.password ) {
-          errorMessage.repeatPasswordValidation = ""
+        setRepeatPassword(value)
+        if (value !== password) {
+          errors.repeatPasswordValidation = "Password doesn't match"
         }
         else {
-          errorMessage.repeatPasswordValidation = "Parola nu corespunde"
+          errors.repeatPasswordValidation = ""
         }
+        setFormValidation(errors)
         break
 
       default:
@@ -178,109 +166,65 @@ export class Register extends Component {
     }
   }
 
+  /* A function that resets the form if the user changes the language */
+  const resetForm = () => {
+    setUserAlreadyExists(false)
+    setEmail("")
+    setPassword("")
+    setRepeatPassword("")
+    setIsVerified(false)
+    setFormValidation(defaultErrors)
+  }
+
   //function that validates if the captcha box was checked
-  verifyCallback() {
-    const errorMessage = this.state.formValidation
-    errorMessage.captchaValidation = ""
-    this.setState({
-      isVerified: true
-    })
+  const verifyCallback = () => {
+    let errors = {...formValidation}
+    errors.captchaValidation = ""
+    setFormValidation(errors)
+    setIsVerified(true)
   }
 
   //function that doesn't permit form validation if the captcha expired
-  verifyExpired() {
-    this.setState({
-      isVerified: false
-    })
+  const verifyExpired = () =>  {
+    setIsVerified(false)
   }
 
-  render() {
-    return (
-      <div className = "AppContainer">
-        <div className="AppRegister"> 
-    
-           { /* <Collapse className="userExists" in={props.userAlreadyExists}>
-            <Alert variant= "filled" severity="error" onClose={props.userAlreadyExistsClose}> {props.userAlreadyExistsMessage} </Alert>
-           </Collapse>  */}
-    
-            <h1>Creează un cont</h1>
-
-            <form autoComplete="off" onSubmit = {this.handleSubmit} className="form">
-              
-            {/*Enter email input */}
-              <div className="form-group">
-                <label htmlFor="email">Email: </label>
-                <div className="emailInput">
-                  <i className="fas fa-user glyphicon"></i>
-                  <input
-                    className="form-control email"
-                    type="text"
-                    name="email"
-                    value = {this.state.email}
-                    placeholder="Adaugă email" 
-                    onChange = {this.handleChange}
-                  />
-                   <span>{this.state.formValidation.emailValidation}</span>
-                </div>
-              </div>
-    
-            {/*Enter password input */}
-              <div className="form-group">
-                <label htmlFor="password">Parola: </label>
-                <div className="passwordInput">
-                  <i className="fas fa-key glyphicon"></i>
-                  <input
-                    className="form-control password"
-                    type="password"
-                    name="password"
-                    value = {this.state.password}
-                    placeholder="Alege o parolă"
-                    onChange = {this.handleChange}
-                  />
-                    <span>{this.state.formValidation.passwordValidation}</span>
-                </div>
-              </div>
-    
-            {/*Enter repeat password input */}
-              <div className="form-group">
-                <label htmlFor="repeatPassword">Repetă parola:</label>
-                <div className="repeatPasswordInput">
-                  <i className="fas fa-key glyphicon"></i>
-                  <input
-                    className="form-control repeatPassword"
-                    type="password"
-                    name="repeatPassword"
-                    value= {this.state.repeatPassword}
-                    placeholder="Repetați parola"
-                    onChange = {this.handleChange}
-                     />
-                      <span>{this.state.formValidation.repeatPasswordValidation}</span>
-                </div>
-                <p className = "loginRedirect">
-                  Aveți deja cont?
-                  <a href="/login"> Autentificați-vă</a>
-                 </p>
-              </div>
-    
-            {/*I'm not a robot captcha */} 
-              <div className = "captchaContainer">
-                <ReCAPTCHA
-                className =" g-recaptcha "
-                sitekey="6LfJ0O0UAAAAAGuWBw9pHnOIArMdlFNkX1BqH34m"
-                onChange={this.verifyCallback}
-                onExpired={this.verifyExpired}
-                hl = "ro"
-                />
-                 <span>{this.state.formValidation.captchaValidation}</span> 
-              </div> 
-    
-           {/*Submit button */}
-              <button type="submit" className="btn-primary form-control SubmitButton"> Înregistrare </button> <br />
-              
-            </form> 
-          </div>
-        </div>
-      )
+  //function to show/hide the password
+  const showOrHidePassword = () => {
+    setShowPassword(!showPassword)
   }
+
+  //function that closes the User already exists error (when user presses on X)
+  const closeUserExistsError = () => {
+    setUserAlreadyExists(false)
+  }
+
+  let sessionActive = localStorage.getItem("session_active")
+  // if an user is loged in, redirect to the main page when they try to access the /register page
+  if (sessionActive !== null || sessionActive === false) {
+    return <Redirect to="/user" />
+  }
+  return (
+    <RegisterPageHTML
+      onChange={handleChange}
+      onSubmit={handleSubmit}
+      email={email}
+      password={password}
+      repeatPassword={repeatPassword}
+      captchaOnChange={verifyCallback}
+      captchaExpire={verifyExpired}
+      emailError={formValidation.emailValidation}
+      passwordError={formValidation.passwordValidation}
+      errorCaptcha={formValidation.captchaValidation}
+      repeatPasswordError={formValidation.repeatPasswordValidation}
+      userAlreadyExists={userAlreadyExists}
+      userAlreadyExistsClose={closeUserExistsError}
+      showHidePasswordFunction = {showOrHidePassword}
+      showHidePassword = {showPassword}
+      showErrorPage = {showErrorPage}
+      showWaitActivationPage = {showWaitActivationPage}
+    />
+  )
 }
+
 export default Register

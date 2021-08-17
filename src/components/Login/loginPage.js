@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
+import { Redirect } from 'react-router'
 import '../../stylesheets/loginPage.css'
 import '../../stylesheets/common.css'
-import ReCAPTCHA from "react-google-recaptcha"
+import LoginPageHTML from "../Login/loginPage.html"
 import { axiosWrapper } from "../../utils/axiosWrapper"
 
-const EMAIL_REGEX = RegExp(/^[a-zA-Z0-9.!#$%&_]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/)
 const minPasswordLength = 6
+const EMAIL_REGEX = RegExp(/^[a-zA-Z0-9.!#$%&_]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/)
 
 /* function used regarding form validation, checks if the inputs are empty or there are errors and returns false 
 otherwise returns true and the form is submitted.*/
@@ -22,79 +23,70 @@ export function formValid({ formValidation, email, password, isVerified }) {
   }
   return valid
 }
-/* A function that resets the form if the user changes the language */
-function resetForm(param) {
-  param.formValidation.captchaValidation = ""
-  param.formValidation.emailValidation = ""
-  param.formValidation.passwordValidation = ""
-  param.email = ""
-  param.password = ""
-  param.isVerified = false
-}
 
-export class Login extends Component {
-  /* It used for initializing the local state of the component by assigning an object to this.state.
-     It used for binding event handler methods that occur in your component. */
-  constructor(props) {
-    //used to acces variables from the parent class, in this case we need it in order to use this.state
-    super(props)
-
-    this.state = {
-      // if authFailed is true, display an error saying that the password or email are incorrect 
-      authFailed: false,
-      formValidation: {
-        captchaValidation: "",
-        emailValidation: "",
-        passwordValidation: ""
-      },
-      isVerified: false,
-      email: "",
-      password: ""
+function Login(props) {
+    // if authFailed is true, display an error saying that the password or email are incorrect 
+    const [authFailed, setAuthFailed] = useState(false)
+    // variable used to keep track if captcha is checked or not
+    const [isVerified, setIsVerified] = useState(false)
+    // state for email input that updates on change
+    const [email, setEmail] = useState("")
+    // state for password input that updates on change
+    const [password, setPassword] = useState("")
+    // object that handles the errors displayed under the input fields
+    const defaultErrors = {
+      captchaValidation: "",
+      emailValidation: "",
+      passwordValidation: ""
     }
+    const [formValidation, setFormValidation] = useState(defaultErrors)
+    // use to determine what message the alert should display based on response (400/417 etc)
+    const [alertMessage, setAlertMessage] = useState("")
+    // state to hide/show the password
+    const [showPassword, setShowPassword] = useState(false)
+    // state to show the error page 
+    const [showErrorPage, setErrorPage] = useState(false)
 
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.verifyCallback = this.verifyCallback.bind(this)
-    this.verifyExpired = this.verifyExpired.bind(this)
-  }
-
- // on submit function
-  handleSubmit(event) {
-    const name = event.target.name
-    const value = event.target.value
-    const errorMessage = this.state.formValidation
-    const item = this.state
-
-    this.setState({ [name]: value })
-
+  // onSubmit validation - checks if all fields are completed correctly and if they are make post request with the data
+  const handleSubmit = (event) => {
     event.preventDefault()
+    const stateData = { 
+      formValidation,
+      email,
+      password,
+      isVerified
+    }
+    let errors = {...formValidation}
 
-    if (!formValid(item)) {
-  
-      if (EMAIL_REGEX.test(item.email)) {
-        errorMessage.emailValidation = ""
+    if (!formValid(stateData)) {
+
+      if (!EMAIL_REGEX.test(email.trim())) {
+        errors.emailValidation = "Invalid email address (e.g. example@domain.com)"
       }
       else {
-        errorMessage.emailValidation = "Adresa de email este obligatorie"
+        errors.emailValidation = ""
       }
 
-      if (item.password.length >= minPasswordLength) {
-        errorMessage.passwordValidation = ""
+      if (password < minPasswordLength) {
+        errors.passwordValidation = "Password must be at least 6 characters long"
       }
       else {
-        errorMessage.passwordValidation = "Vă rugâm introduceți parola"
+        errors.passwordValidation = ""
       }
 
-      if (item.isVerified === false) {
-        item.formValidation.captchaValidation = "Trebuie să bifați căsuța captcha"
+      if (!isVerified) {
+        errors.captchaValidation = " Please check the captcha box"
       }
       else {
-        item.formValidation.captchaValidation = ""
+        errors.captchaValidation = ""
       }
-    } else {
+      setFormValidation(errors)
+    } 
+    
+    else {
       const data = {
-        email: this.state.email,
-        password: this.state.password
+        email: email.trim(),
+        password: password
       };
 
       axiosWrapper.post(`/login`, data)
@@ -103,144 +95,124 @@ export class Login extends Component {
           localStorage.setItem("session_active", true)
           localStorage.setItem("user_id", res.data["id"])
           localStorage.setItem("jwt", res.data["token"])
+          localStorage.setItem("role", res.data["role"])
           localStorage.setItem("user_email", data.email)
-          console.log(res.data)
           window.location = "/user"
         })
         .catch(error => {
-          // if the credentials are invalid, redirect the user to the login page and tell them that the password or email are incorrect
           if (error.response.status === 400 || error.response.status === 401) {
-            resetForm(this.state)
+            resetForm()
             window.grecaptcha.reset()
-            this.setState({ authFailed: true })
+            setAuthFailed(true)
+            setAlertMessage("Wrong email or password")
+          } else if (error.response.status === 403) {
+            resetForm()
+            window.grecaptcha.reset()
+            setAuthFailed(true)
+            setAlertMessage("Please activate your account")
           } else if (error.response.status === 417) {
-            // todo: redirect to a page that says that the account is not activated and has a button to re-submit the activation email for am email written in a form
-            alert("contul dummneavoastra nu a fost activat")
+            resetForm()
+            window.grecaptcha.reset()
+            setAuthFailed(true)
+            setAlertMessage("This account doesn't exist")
           } else {
-            window.location = "/error"
+            setErrorPage(true)
           }
         })
     }
   }
 
-  /* real time validation of the input fields. On every element on which we use onChange event, this function
-  keeps track of the value inside that element and updates STATE accordingly */
-  handleChange(event) {
+  const handleChange = (event) => {
     const name = event.target.name
     const value = event.target.value
-    const errorMessage = this.state.formValidation
-
-    this.setState({ [name]: value })
+    let errors = {...formValidation}
 
     switch (name) {
       case 'email':
-        if (EMAIL_REGEX.test(value)) {
-          errorMessage.emailValidation = ""
+        setEmail(value)
+        if (!EMAIL_REGEX.test(value.trim())) {
+          errors.emailValidation = "Invalid email address (e.g. example@domain.com)"
         }
         else {
-          errorMessage.emailValidation = "Emailul introdus este invalid"
+          errors.emailValidation = ""
         }
+        setFormValidation(errors)
         break
 
       case 'password':
-        if (value.length >= minPasswordLength) {
-          errorMessage.passwordValidation = ""
+        setPassword(value)
+        if (value.length < minPasswordLength) {
+          errors.passwordValidation = "Password must be at least 6 characters long"
         }
         else {
-          errorMessage.passwordValidation = "Parola invalidă"
+          errors.passwordValidation = ""
         }
+        setFormValidation(errors)
         break
 
       default:
         break
     }
+  }
 
+  /* A function that resets the form if the user changes the language */
+  const resetForm = () => {
+    setEmail("")
+    setPassword("")
+    setAuthFailed(false)
+    setIsVerified(false)
+    setFormValidation(defaultErrors)
+    setAlertMessage("")
   }
 
   //function that validates if the captcha box was checked
-  verifyCallback() {
-    const errorMessage = this.state.formValidation
-    errorMessage.captchaValidation = ""
-
-    this.setState({
-      isVerified: true
-    })
+  const verifyCallback = () => {
+    let errors = {...formValidation}
+    errors.captchaValidation = ""
+    setFormValidation(errors)
+    setIsVerified(true)
   }
 
   //function that doesn't permit form validation if the captcha expired
-  verifyExpired() {
-    this.setState({
-      isVerified: false
-    })
+  const verifyExpired = () => {
+    setIsVerified(false)
   }
 
-  render() {
-    return (
-        <div className = "AppContainer">
-          <div className="AppLogin"> 
-      
-              <h1>Autentificare</h1>
-              <form autoComplete="off" onSubmit = {this.handleSubmit} className="form">
-                
-              {/*Enter email input */}
-                <div className="form-group">
-                  <label htmlFor="email">Email: </label>
-                  <div className="emailInput">
-                    <i className="fas fa-user glyphicon"></i>
-                    <input
-                      className="form-control"
-                      type="text"
-                      name="email"
-                      value = {this.state.email}
-                      placeholder="Adaugă email" 
-                      onChange = {this.handleChange}
-                    />
-                     <span>{this.state.formValidation.emailValidation}</span>
-                  </div>
-                </div>
-      
-              {/*Enter password input */}
-                <div className="form-group">
-                  <label htmlFor="password">Parola:</label>
-                  <div className="passwordInput">
-                    <i className="fas fa-key glyphicon"></i>
-                    <input
-                      className="form-control password"
-                      type="password"
-                      name="password"
-                      value = {this.state.password}
-                      placeholder="Adaugă parola"
-                      onChange = {this.handleChange}
-                    />
-                     <span>{this.state.formValidation.passwordValidation}</span>
-                  </div>    
-                  <a className = "forgotPassRedirect" href="/forgot-password"> Ai uitat parola ? </a> 
-                </div>
-      
-              {/*I'm not a robot captcha */} 
-                  <div className = "captchaContainer">
-                    <ReCAPTCHA
-                    className ="g-recaptcha"
-                    sitekey="6LfJ0O0UAAAAAGuWBw9pHnOIArMdlFNkX1BqH34m"
-                    onChange={this.verifyCallback}
-                    onExpired={this.verifyExpired}
-                    hl = "ro"
-                    />
-                    <span>{this.state.formValidation.captchaValidation}</span>
-                  </div> 
-                  <p className ="registerRedirect">
-                    Nu ai cont?
-                    <a href="/register"> Înregistrează-te </a>
-                  </p>
-                
-              {/*Submit button */}
-                <button type="submit" className="btn-primary form-control SubmitButton"> Intră în cont </button> <br />
-      
-              </form> 
-            </div>
-          </div>
-        )
+  //function to show/hide the password
+  const showOrHidePassword = () => {
+    setShowPassword(!showPassword)
   }
+
+  //function that closes the User already exists error (when user presses on X)
+  const closeAuthFailerError = () => {
+    setAuthFailed(false)
+  }
+
+  let sessionActive = localStorage.getItem("session_active")
+  // if an user is logged in, redirect to the main page when they try to access the /login page
+  if (sessionActive !== null || sessionActive === false) {
+    return <Redirect to="/user" />
+  }
+  return (
+    <LoginPageHTML
+      onChange={handleChange}
+      onSubmit={handleSubmit}
+      email={email}
+      password={password}
+      authFailed={authFailed}
+      authFailedErrorClose={closeAuthFailerError}
+      alertMessage = {alertMessage}
+      captchaOnChange={verifyCallback}
+      captchaExpire={verifyExpired}
+      emailError={formValidation.emailValidation}
+      passwordError={formValidation.passwordValidation}
+      errorCaptcha={formValidation.captchaValidation}
+
+      showHidePasswordFunction = {showOrHidePassword}
+      showHidePassword = {showPassword}
+      showErrorPage = {showErrorPage}
+    />
+  )
 }
 
 

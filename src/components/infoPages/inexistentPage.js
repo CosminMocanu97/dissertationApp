@@ -1,19 +1,20 @@
-import React from 'react';
+import React from 'react'
 import { Alert } from "react-bootstrap"
 import '../../stylesheets/404page.css'
 import '../../stylesheets/common.css'
 
-const InexistentPage = () => {
+function InexistentPage() {
+    
     return (
-        <div className="AppContainer">
+        <div className="AppContainerInfo">
             <Alert variant="danger" className="App404Page">
-                <Alert.Heading> 404 </Alert.Heading>
+                <Alert.Heading> 404 page not found </Alert.Heading>
                 <p>
-                    Pagina solicitată nu există!
-            </p>
+                    The requested page doesn't exist!
+                </p>
                 <hr />
                 <div className="redirectDiv">
-                    <a href="/login"> <button type="button"> Intră în cont </button> </a>
+                    <a href="/user"> <button type="button"> Homepage </button> </a>
                 </div>
             </Alert>
         </div>

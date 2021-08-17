@@ -11,6 +11,29 @@
   display: flex;
   flex-direction: column;
 }
+/* 404page, erropage */
+.AppContainerInfo {
+  overflow: hidden;
+  overflow-y: visible;
+  height: 100%;
+  width: 100%;
+  background-color: #282c34;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+/* 404page, erropage */
+.AppContainerInfo .alertContainer p { 
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size:16px;
+}
+/* 404page, erropage */
+.AppContainerInfo .alert-heading { 
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: bold;
+}
 
 /* White div styling - (App) */
 .alertContainer {
@@ -21,7 +44,7 @@
   animation-duration: 1.5s;
   animation-delay: 0s;
   animation-fill-mode: none;
-  min-width: 400px;
+  width: 500px;
 }
 @keyframes formAnimation {
   0% {
@@ -39,7 +62,7 @@
 }
 /* syling for submit button */
 .alertContainer button {
-  width: 135px;
+  width: 145px;
   height: 38px;
   border: none;
   border-radius: 15px;
@@ -60,7 +83,6 @@
   justify-content: flex-end;
 }
 button.MuiButton-root {
-  margin-right: 20px;
   margin-bottom:5px;
   font-family: "Open Sans", Open-Sans, Sans-serif;
   font-weight: bold;
@@ -80,7 +102,14 @@ button.MuiButton-root {
   cursor: not-allowed !important;
   pointer-events: initial !important;
 }
-
+.passwordInput .glyphiconEye {
+  position: absolute;
+  padding: 10px;
+  padding-left: 10px;
+  cursor:pointer;
+  right:13px;
+  font-size: 20px;
+}
 @media only screen and (max-width: 991.92px) {
   .MuiTooltip-tooltip{
     padding:7px !important;
@@ -90,6 +119,12 @@ button.MuiButton-root {
 @media (max-width: 699px) {
   .alertContainer {
     width: 90vw;
+  }
+}
+@media only screen and (max-height: 900px) and (max-width: 500px) {
+  .AppContainer {
+    align-items: flex-start;
+    justify-content: flex-start;
   }
 }
 @media only screen and (max-width: 349px) {

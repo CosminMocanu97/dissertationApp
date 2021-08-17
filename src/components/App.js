@@ -3,13 +3,15 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import Register from './Register/registerPage'
 import Login from './Login/loginPage'
 import ForgotPassword from "./ForgotPassword/forgotPasswordPage"
-import Confirmation from './ForgotPasswordConfirmation/confirmationPage'
-import waitAccountActivationPage from './waitAccountActivation/waitAccountActivationPage'
 import activateAccountPage from './activateAccountPage/activateAccountPage'
-import inexistentPage from './inexistingPage/inexistingPage'
+import inexistentPage from './infoPages/inexistentPage'
 import loggedUserPage from './loggedUserPage/loggedUserPage'
 import resetPassPage from './resetPasswordPage/resetPasswordPage'
 import FileModificationPage from './modifyFilePage/fileModification'
+import SingleFolderPage from './singleFolderPage/singleFolderPage'
+import ErrorPage from "./infoPages/errorPage"
+
+import SetPassword from  "./singleFolderPage/checkPasswordPopout"
 
 function ApplicationRoutes() {
   return (
@@ -20,11 +22,12 @@ function ApplicationRoutes() {
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
         <Route path="/forgot-password" exact component={ForgotPassword} />
-        <Route path="/confirmation" exact component={Confirmation} />
         <Route path="/user" exact component={loggedUserPage} />
-        <Route path="/waitAccountActivation" exact component={waitAccountActivationPage} />
         <Route path="/renew-password/:token" exact component={resetPassPage} />
-        <Route path="/file" exact component={FileModificationPage} />
+        <Route path="/user/:folder_id" exact component={SingleFolderPage} />
+        <Route path="/user/:folder_id/:file_id" exact component={FileModificationPage} />
+        <Route path="/error" exact component={ErrorPage} />
+        <Route path="/test" exact component={SetPassword} />
         <Route path='*' component={inexistentPage} />
     </Switch> 
     </Router>

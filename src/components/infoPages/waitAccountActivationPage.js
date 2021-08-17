@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { Alert } from "react-bootstrap"
 import '../../stylesheets/waitActivation.css'
@@ -12,13 +13,13 @@ const WaitAccountActivationPage = () => {
   return (
     <div className="AppContainer">
       <Alert variant="success" className="AppWaitActivation">
-        <Alert.Heading> Contul a fost creat cu succes!</Alert.Heading>
+        <Alert.Heading> Account created successfully!</Alert.Heading>
         <p>
-          Vă rugăm să verificați adresa de email <span className="userEmail"> {email} </span> pentru activare.
+          To activate your account, please check the email address <span className="userEmail">{email}</span>.
         </p>
         <hr />
         <div className="redirectDiv">
-          <a href="/login"> <button type="button"> Intră în cont </button> </a>
+          <a href="/login"> <button type="button"> Log in </button> </a>
         </div>
       </Alert>
     </div>
