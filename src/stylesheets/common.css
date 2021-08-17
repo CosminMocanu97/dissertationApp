@@ -1,0 +1,134 @@
+/* CONTAINER CSS FOR: REGISTER, LOGIN, FORGETPASSWORD, FORGETPASSWORD CONFIRMATION*/
+.AppContainer {
+  overflow: hidden;
+  overflow-y: visible;
+  height: 100%;
+  width: 100%;
+  background-color: #282c34;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+/* 404page, erropage */
+.AppContainerInfo {
+  overflow: hidden;
+  overflow-y: visible;
+  height: 100%;
+  width: 100%;
+  background-color: #282c34;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+/* 404page, erropage */
+.AppContainerInfo .alertContainer p { 
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size:16px;
+}
+/* 404page, erropage */
+.AppContainerInfo .alert-heading { 
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: bold;
+}
+
+/* White div styling - (App) */
+.alertContainer {
+  border-radius: 10px;
+  padding: 20px !important;
+  box-shadow: 0 0 2px black;
+  animation-name: formAnimation;
+  animation-duration: 1.5s;
+  animation-delay: 0s;
+  animation-fill-mode: none;
+  width: 500px;
+}
+@keyframes formAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.alertContainer p {
+  font-size: 17px;
+}
+.alertContainer span {
+  font-weight: bold;
+}
+/* syling for submit button */
+.alertContainer button {
+  width: 145px;
+  height: 38px;
+  border: none;
+  border-radius: 15px;
+  margin: 0 auto;
+  background-color: #001f3f;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+.alertContainer button:hover {
+  background-color: rgb(16, 16, 255);
+}
+.alertContainer button:focus {
+  outline: none;
+}
+.alertContainer .redirectDiv {
+  display: flex;
+  justify-content: flex-end;
+}
+button.MuiButton-root {
+  margin-bottom:5px;
+  font-family: "Open Sans", Open-Sans, Sans-serif;
+  font-weight: bold;
+  text-transform: none;
+}
+.MuiTooltip-popper {
+  width:300px !important;
+  transition: none !important;
+}
+.MuiTooltip-tooltip{
+  font-size: 14px !important;
+  background-color: #001F3F !important;
+  color: #FFC85B !important;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+}
+.MuiButtonBase-root.Mui-disabled {
+  cursor: not-allowed !important;
+  pointer-events: initial !important;
+}
+.passwordInput .glyphiconEye {
+  position: absolute;
+  padding: 10px;
+  padding-left: 10px;
+  cursor:pointer;
+  right:13px;
+  font-size: 20px;
+}
+@media only screen and (max-width: 991.92px) {
+  .MuiTooltip-tooltip{
+    padding:7px !important;
+  }
+}
+/*changes for the mobile view for devices lower than 900px height and 500px width */
+@media (max-width: 699px) {
+  .alertContainer {
+    width: 90vw;
+  }
+}
+@media only screen and (max-height: 900px) and (max-width: 500px) {
+  .AppContainer {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+}
+@media only screen and (max-width: 349px) {
+  .MuiTooltip-popper {
+    width:270px !important;
+  }
+}

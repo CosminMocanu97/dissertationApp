@@ -1,0 +1,156 @@
+/* White div styling - (App) */
+.AppLogin {
+  background-color: white;
+  height: auto;
+  width: 380px;
+  border-radius: 10px;
+  overflow: scroll;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 0 2px black;
+  animation-name: formAnimation;
+  animation-duration: 1.5s;
+  animation-delay: 0s;
+  animation-fill-mode: none;
+}
+@keyframes formAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.AppLogin .wrongCredentials {
+  margin-top:5px;
+  margin-bottom: 5px;
+}
+/* Title of the form styling*/
+.AppLogin h1 {
+  padding-top:5px;
+  font-family: "Slabo", serif;
+  font-size: 28px;
+}
+.AppLogin .registerRedirect {
+  margin-top: 7px;
+  font-size: 15px;
+}
+.AppLogin label {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+/* general styling regarding the positioning of the form and the elements inside it*/
+.AppLogin .form {
+  margin-top: 12px;
+  align-content: center;
+}
+.AppLogin .form .form-group {
+  margin-bottom: 7px;
+}
+/* syling for submit button */
+.AppLogin .form button {
+  width: 80%;
+  height: 40px;
+  border-radius: 15px;
+  margin: 0 auto;
+  background-color: #001f3f;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+/* Styling for the RO/EN buttons */
+.AppLogin .romanian,
+.AppLogin .english {
+  background-color: white;
+  font-size: 15px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+}
+/* Input fields styling  */
+.AppLogin .emailInput input,
+.AppLogin .passwordInput input {
+  width: 100%;
+  height:40px;
+  border-radius: 15px;
+  margin: 0 auto;
+  padding-left: 30px;
+  font-size: 15px;
+}
+.AppLogin .passwordInput input {
+  padding-right: 50px;
+}
+.AppLogin .emailInput,
+.AppLogin .passwordInput {
+  position: relative;
+  border-radius: 30px;
+  width: 80%;
+  align-content: center;
+  margin: 0 auto;
+}
+.AppLogin .passwordInput {
+  margin-bottom: 10px;
+}
+.AppLogin .forgotPassRedirect {
+  font-size: 15px;
+}
+/* position of the little icons insde the input fields for the id and password */
+.AppLogin .emailInput .glyphicon,
+.AppLogin .passwordInput .glyphicon {
+  position: absolute;
+  padding: 9px;
+  padding-left: 9px;
+  pointer-events: none;
+  left: 0px;
+  font-size: 18px;
+}
+/* Error messages display (appear under the inputs when validation is false)*/
+.AppLogin .form span {
+  color: red;
+  margin-top:5px;
+  font-size: 13px;
+}
+/* Recaptcha positioning */
+.AppLogin .g-recaptcha {
+  margin-top: 20px;
+  display: inline-block;
+}
+/*display elements in column below captcha box */
+.AppLogin .captchaContainer {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+/*changes for the mobile view for devices lower than 900px height and 500px width */
+@media only screen and (max-height: 900px) and (max-width: 500px) {
+  .AppLogin {
+    max-height: 100%;
+    width: 99%;
+    border-radius: 0px;
+    overflow: hidden;
+    overflow-y: visible;
+    margin-bottom: 2px;
+    margin-left: 0.5%;
+  }
+  .AppLogin h1 {
+    font-size: 25px;
+  }
+  .AppLogin .emailInput,
+  .AppLogin .passwordInput {
+    width: 80%;
+  }
+  .AppLogin .form button {
+    margin-top: 35px;
+    margin-bottom: 15px;
+    width: 80%;
+    height: 45px;
+  }
+  .AppLogin .g-recaptcha {
+    transform: scale(0.9);
+    transform-origin: 50% 0;
+    margin-bottom: -13px;
+    margin-top: 20px;
+  }
+}

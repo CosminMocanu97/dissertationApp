@@ -1,0 +1,81 @@
+.appContainer {
+  overflow: hidden;
+  overflow-y: scroll;
+  background-color: #f5f5f5;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+.appContainer::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+.appContainer .MuiSelect-select:focus {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+.appContainer button {
+  outline: none !important;
+}
+.folderDetails {
+  line-height: 1.5;
+  width: 100%;
+  padding-top: 10px;
+  padding-left: 7%;
+  padding-right: 7%;
+  flex-wrap: wrap;
+  display: flex;
+}
+.folderDetails .MuiButton-root {
+  width:20vw;
+  height:40px;
+  margin-right: 10px;
+  justify-content: left;
+  text-transform: none;
+  font-weight: bold;
+}
+.folderDetails .singleFolderDiv {
+  margin-bottom: 20px;
+}
+.folderDetails .singleFolderDiv .folderName {
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+}
+.appContainer .sectionTitle {
+  font-family: 'Staatliches', cursive;
+  padding-top: 80px;
+  padding-left: 7%;
+  padding-right: 7%;
+  font-size: 24px;
+  margin-bottom: 10px;
+  margin-left: 2px;
+}
+@media only screen and (max-width: 991.92px) {
+  .folderDetails {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  .folderDetails .MuiButton-root {
+    width:27vw;
+  }
+  .appContainer .sectionTitle {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+}
+@media only screen and (max-width: 599.92px) {
+  .folderDetails .MuiButton-root {
+    width:90vw;
+  }
+}
+@media only screen and (max-width: 349px) {
+  .appContainer .sectionTitle {
+    font-size: 20px;
+  }
+  .folderDetails .MuiButton-root {
+    width:90vw;
+  }
+}

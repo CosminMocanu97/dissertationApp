@@ -1,0 +1,66 @@
+/* White div styling - (App) */
+.AppConfirmation {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  width: 650px;
+  max-height: 500px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 2px black;
+  animation-name: formAnimation;
+  animation-duration: 1.5s;
+  animation-delay: 0s;
+  animation-fill-mode: none;
+}
+@keyframes formAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.AppConfirmation p {
+  margin-top: -12px;
+  font-size: 17px;
+}
+/* syling for submit button */
+.AppConfirmation button {
+  width: 180px;
+  height: 40px;
+  border-radius: 15px;
+  margin: 0 auto;
+  background-color: #001f3f;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+.AppConfirmation hr {
+  margin-bottom: 20px;
+  margin-top: 0px;
+}
+.AppConfirmation .alert-heading {
+  margin-bottom: 30px;
+}
+
+/*changes for the mobile view for devices lower than 900px height and 500px width */
+@media (max-width: 799px) {
+  .AppConfirmation {
+    width: 85vw;
+  }
+  .AppConfirmation button {
+    height: 45px;
+  }
+}
+@media (max-width: 600px) {
+  .AppConfirmation {
+    width: 92%;
+    min-height: 300px;
+    border-radius: 0px;
+  }
+  .AppConfirmation button {
+    margin-top: 7%;
+    margin-bottom: 15px;
+  }
+}

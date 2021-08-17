@@ -1,0 +1,161 @@
+/* Register div - contains all the elements of the form */
+.AppRegister {
+  background-color: white;
+  height: auto;
+  width: 380px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  overflow: scroll;
+  box-shadow: 0 0 2px black;
+  animation-name: formAnimation;
+  animation-duration: 1.5s;
+  animation-delay: 0s;
+  animation-fill-mode: none;
+}
+@keyframes formAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.AppRegister .userExists {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+/* Title of the form */
+.AppRegister h1 {
+  font-family: "Slabo", serif;
+  font-size: 25px;
+  padding-top: 5px;
+}
+/* p tag with the informations for login redirect */
+.AppRegister .loginRedirect {
+  margin-top:5px;
+  font-size: 15px;
+  margin-bottom: 0px;
+}
+.AppRegister label {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+/* GS Tech image styling */
+.AppRegister img {
+  border-radius: 20%;
+  height: 50px;
+  width: 50px;
+}
+/* general styling regarding the positioning of the form and the elements inside it*/
+.AppRegister .form {
+  margin-top: 15px;
+  align-content: center;
+}
+/* syling for submit button */
+.AppRegister .form button {
+  width: 80%;
+  height: 40px;
+  border-radius: 15px;
+  margin: 0 auto;
+  background-color: #001f3f;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+/* syling for input fields */
+.AppRegister .form .form-group {
+  margin-bottom: 10px;
+}
+/* Styling for the RO/EN buttons */
+.AppRegister .romanian,
+.AppRegister .english {
+  background-color: white;
+  font-size: 15px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+}
+/* Input fields styling  */
+.AppRegister .emailInput input,
+.AppRegister .passwordInput input,
+.AppRegister .repeatPasswordInput input {
+  width: 100%;
+  height: 37px;
+  border-radius: 15px;
+  margin: 0 auto;
+  padding-left: 30px;
+  font-size: 15px;
+}
+.AppRegister .emailInput,
+.AppRegister .passwordInput,
+.AppRegister .repeatPasswordInput {
+  position: relative;
+  border-radius: 30px;
+  width: 80%;
+  align-content: center;
+  margin: 0 auto;
+}
+/* position of the little icons insde the input fields for the id and password */
+.AppRegister .emailInput .glyphicon,
+.AppRegister .passwordInput .glyphicon,
+.AppRegister .repeatPasswordInput .glyphicon{
+  position: absolute;
+  padding: 9px;
+  padding-left: 9px;
+  pointer-events: none;
+  left: 0px;
+  font-size: 18px;
+}
+/* Error messages display (appear under the inputs when validation is false)*/
+.AppRegister .form span {
+  color: red;
+  font-size: 13px;
+}
+/* Recaptcha positioning */
+.AppRegister .g-recaptcha {
+  margin-top: 15px;
+  display: inline-block;
+}
+.AppRegister .captchaContainer {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+/*changes for the mobile view for devices lower than 900px height and 500px width */
+@media only screen and (max-height: 900px) and (max-width: 500px) {
+  .AppContainer {
+    padding-top: 2px;
+  }
+  .AppRegister {
+    max-height: 100%;
+    width: 100%;
+    border-radius: 0px;
+    overflow: hidden;
+    overflow-y: visible;
+    margin-bottom: 2px;
+  }
+  .AppRegister h1 {
+    font-size: 25px;
+  }
+  .AppRegister .emailInput,
+  .AppRegister .passwordInput,
+  .AppRegister .repeatPasswordInput {
+    width: 80%;
+  }
+  .AppRegister .form button {
+    margin-top: 35px;
+    margin-bottom: 15px;
+    width: 80%;
+    height: 45px;
+  }
+  .AppRegister .g-recaptcha {
+    transform: scale(0.9);
+    transform-origin: 50% 0;
+    margin-bottom: -13px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+  }
+}

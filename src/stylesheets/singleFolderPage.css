@@ -1,0 +1,98 @@
+.fileContainer {
+  overflow: hidden;
+  overflow-y: scroll;
+  background-color: #f5f5f5;
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+.fileContainer::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+.fileContainer .MuiSelect-select:focus {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+.fileContainer button {
+  outline: none !important;
+}
+.fileList {
+  line-height: 1.5;
+  width: 100%;
+  padding-left: 7%;
+  padding-right: 7%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.fileContainer .sectionTitle {
+  font-family: 'Staatliches', cursive;
+  padding-top: 80px;
+  padding-left: 7%;
+  padding-right: 7%;
+  font-size: 24px;
+  margin-bottom: 15px;
+  margin-left: 2px;
+}
+.fileContainer .sectionTitlePDF {
+  font-family: 'Staatliches', cursive;
+  padding-top: 50px;
+  padding-left: 7%;
+  padding-right: 7%;
+  font-size: 24px;
+  margin-bottom: 15px;
+  margin-left: 2px;
+}
+.fileContainer .sectionTitle span, .fileContainer .sectionTitlePDF span {
+  font-weight: bold;
+  font-family: 'Staatliches', cursive;
+}
+.fileContainer .fileExtensionImg {
+  height: 35px;
+  width: 35px;
+}
+.fileContainer .fileLinkDiv {
+  height: 40px;
+  margin-right: 20px;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media only screen and (max-width: 991.92px) {
+  .fileList {
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    display: block;
+  }
+  .fileContainer .sectionTitle {
+      padding-left: 5%;
+      padding-right: 5%;
+      font-size: 22px;
+  }
+  .fileContainer .sectionTitlePDF {
+    font-family: 'Staatliches', cursive;
+    padding-left: 5%;
+    padding-right: 5%;
+    font-size: 22px;
+  }
+}
+@media only screen and (max-width: 599.92px) {
+  .fileList {
+    padding-left: 25px;
+    padding-right: 10px;
+  }
+  .fileContainer .sectionTitle, .fileContainer .sectionTitlePDF {
+      padding-left: 25px;
+        padding-right: 10px;
+    }
+}
+@media only screen and (max-width: 349px) {
+  .fileContainer .sectionTitle, .fileContainer .sectionTitlePDF {
+    font-size: 20px;
+  }
+}
