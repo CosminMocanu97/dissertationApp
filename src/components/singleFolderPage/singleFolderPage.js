@@ -101,7 +101,7 @@ function LoggedUserPage() {
       return (
       <div className="fileContainer">
         <Navbar ownerID = {ownerID} />
-        <h1 className="sectionTitle"> The office files that can be converted in PDF files <span> {currentFolder} </span>  are: </h1>
+        <h1 className="sectionTitle"> The office files in the <span> {currentFolder} </span>  folder are: </h1>
           <div className="fileList">
             {allFilesArray.map(file =>  {
                   if(file.Name.split('.').pop() !== "pdf") {

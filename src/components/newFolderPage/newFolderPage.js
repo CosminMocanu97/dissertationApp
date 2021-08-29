@@ -28,7 +28,7 @@ function NewFolderPage(props) {
     const { name, value } = event.target
     switch (name) {
       case 'folderName': 
-        setFolderName(value.trim())
+        setFolderName(value)
         if(value === "") {
           setFolderNameError("Folder name cannot be empty")
         } 
