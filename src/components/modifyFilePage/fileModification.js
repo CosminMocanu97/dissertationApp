@@ -2,32 +2,51 @@ import React, { useRef, useEffect, useState } from 'react';
 import WebViewer from '@pdftron/webviewer';
 import { useParams } from 'react-router-dom'
 import { axiosWrapper, config } from '../../utils/axiosWrapper'
+import CheckFilePassword from './checkFilePasswordPage';
 import "../../stylesheets/fileModification.css"
 import Navbar from '../../utils/navbar'
+import { verifyToken } from '../../utils/verifyToken'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 function FileModificationPage() {
   const viewer = useRef(null);
   const { folder_id } = useParams()
+  const { subfolder_id } = useParams()
   const { file_id } = useParams()
+  const [isLoading, setIsLoading] = useState(true)
   const [fileDetails, setFileDetails] = useState(null)
+  const [isLocked, setIsLocked] = useState(false)
   const [ownerID, setOwnerID] = useState(null)
+  const currentUserID = Number(localStorage.getItem("user_id"))
 
   useEffect(() => {
-    axiosWrapper.get('/user/' + folder_id + '/' + file_id, config) 
+    axiosWrapper.get('/user/' + folder_id + "/" + subfolder_id + "/" + file_id, config) 
     .then(response => {
         const result = response.data.file
+        if (sessionStorage.getItem("file" + file_id) === null) {
         setFileDetails(result)
-        setOwnerID(response.data.file.OwnerID)
-    }).catch(error => {
-        console.log(error)
+        setIsLocked(result.FileLocked)
+        setOwnerID(result.OwnerID)
+        setIsLoading(false)
+        } else {
+          setFileDetails(result)
+          setIsLocked(sessionStorage.getItem("file" + file_id))
+          setOwnerID(result.OwnerID)
+          setIsLoading(false)
+        }  
+      }).catch(error => {
+        if (error.response.data.error === "jwtExpired") {
+          verifyToken("/user/" + folder_id + "/" + subfolder_id + "/" + file_id)
+        }
         alert("There was an error with the get request")
+        window.location = "/error"
     })
-  }, [folder_id, file_id]);
+  }, [folder_id, file_id, subfolder_id]);
 
   // if using a class, equivalent of componentDidMount 
   useEffect(() => {
     if(fileDetails !== null) {
-      const API =  "http://localhost:8080/getFile/" + fileDetails.RootFolder + "/" + fileDetails.Filename
+      const API =  "http://localhost:8080/getFile/" + fileDetails.Workspace + "/" + fileDetails.CurrentFolder + "/" + fileDetails.Filename
 
       if(fileDetails.Filename.split('.').pop() === "pdf") {
         WebViewer(
@@ -47,14 +66,14 @@ function FileModificationPage() {
                   const options = { xfdfString };
                   const data = await doc.getFileData(options);
                   const arr = new Uint8Array(data);
-                  const blob = new Blob([arr], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+                  const blob = new Blob([arr], { type: 'application/pdf' });
 
-                  axiosWrapper.post('/user/' + folder_id + "/" + file_id + "/update", blob, config)
+                  axiosWrapper.post('/user/' + folder_id + "/" + subfolder_id + "/" + file_id + "/update", blob, config)
                   .then(response => 
-                     window.location = "/user/" + folder_id + "/" + file_id 
+                     window.location = "/user/" + folder_id + "/" + subfolder_id + "/" + file_id 
                     )
                   .catch(error => {
-                    console.log(error)
+                    alert("There is an error with the POST update file")
                   });
                 }
               });
@@ -72,16 +91,35 @@ function FileModificationPage() {
         )
       }
     }
-  }, [folder_id, file_id, fileDetails]);
+  }, [folder_id, file_id, subfolder_id, fileDetails]);
 
-  return (
-    <div className="FileModification">
-      <Navbar ownerID = {ownerID} />
-      <div className="header">
+  if (!localStorage.getItem("session_active") || localStorage.getItem("session_active") === null) {
+    window.location = "/login"
+    return (
+      <div className = "circularProgress">
+          <CircularProgress />
       </div>
-      <div className="webviewer" ref={viewer}></div>
-    </div>
-  );
-};
+    )
+  }
+
+  else if(!isLoading && fileDetails !== null && isLocked === true && ownerID !== currentUserID && localStorage.getItem("is_admin") === "false") {
+    return (
+      <div className="fileContainer">
+         <Navbar ownerID = {ownerID} />
+        <CheckFilePassword isLocked = {isLocked} setIsLocked = {setIsLocked} />
+      </div>
+    )
+  } 
+  else {
+    return (
+      <div className="FileModification">
+        <Navbar ownerID = {ownerID} />
+        <div className="header">
+        </div>
+        <div className="webviewer" ref={viewer}></div>
+      </div>
+    )
+  }
+}
 
 export default FileModificationPage;

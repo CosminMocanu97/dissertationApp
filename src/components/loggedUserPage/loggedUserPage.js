@@ -21,7 +21,7 @@ function LoggedUserPage(props) {
         if (err.response.data.error === "jwtExpired") {
           verifyToken("/user")
         }
-        console.log(err.response)
+        window.location = "/error"
     })
   }, []);
 
@@ -36,7 +36,7 @@ function LoggedUserPage(props) {
     return (
     <div className="appContainer">
       <Navbar />
-        <h1 className="sectionTitle"> The current folders are: </h1>
+        <h1 className="sectionTitle"> The current workspaces are: </h1>
         <div className="folderDetails">
             {allFoldersArray.map(folder => (
               <div key = {folder.ID} className="singleFolderDiv">
@@ -58,8 +58,9 @@ function LoggedUserPage(props) {
     return (
     <div className="appContainer">
       <Navbar />
+        <h1 className="sectionTitle"> No workspaces found.</h1>
         <div className="folderDetails">
-          <h1 className="sectionTitle"> The workspace has no folders.</h1>
+
       </div>
     </div>
     )

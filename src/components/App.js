@@ -9,9 +9,8 @@ import loggedUserPage from './loggedUserPage/loggedUserPage'
 import resetPassPage from './resetPasswordPage/resetPasswordPage'
 import FileModificationPage from './modifyFilePage/fileModification'
 import SingleFolderPage from './singleFolderPage/singleFolderPage'
+import SingleSubfolderPage from "./singleSubfolderPage/singleSubfolderPage"
 import ErrorPage from "./infoPages/errorPage"
-
-import SetPassword from  "./singleFolderPage/checkPasswordPopout"
 
 function ApplicationRoutes() {
   return (
@@ -25,9 +24,12 @@ function ApplicationRoutes() {
         <Route path="/user" exact component={loggedUserPage} />
         <Route path="/renew-password/:token" exact component={resetPassPage} />
         <Route path="/user/:folder_id" exact component={SingleFolderPage} />
-        <Route path="/user/:folder_id/:file_id" exact component={FileModificationPage} />
+        <Route path="/user/:folder_id/:subfolder_id" exact component={SingleSubfolderPage} />
+
+
+
+        <Route path="/user/:folder_id/:subfolder_id/:file_id" exact component={FileModificationPage} />
         <Route path="/error" exact component={ErrorPage} />
-        <Route path="/test" exact component={SetPassword} />
         <Route path='*' component={inexistentPage} />
     </Switch> 
     </Router>

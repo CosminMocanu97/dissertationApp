@@ -12,7 +12,6 @@ export const verifyToken = (redirectURL) => {
       localStorage.setItem("jwt", response.data["token"])
       window.location = redirectURL
     }).catch(error =>{
-      console.log(error.response.data.error)
       if (error.response.data.error === "renewRefreshToken") {
         localStorage.removeItem("session_active")
         localStorage.removeItem("refresh_token")

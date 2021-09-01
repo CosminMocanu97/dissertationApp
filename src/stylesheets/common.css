@@ -110,6 +110,9 @@ button.MuiButton-root {
   right:13px;
   font-size: 20px;
 }
+.MuiButton-iconSizeMedium > *:first-child {
+  font-size:30px !important;
+}
 @media only screen and (max-width: 991.92px) {
   .MuiTooltip-tooltip{
     padding:7px !important;

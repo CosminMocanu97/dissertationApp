@@ -94,7 +94,9 @@ function Login(props) {
           // if the user manages to log in, store his id and JWT to be used on all the pages and mark that there is an active session 
           localStorage.setItem("session_active", true)
           localStorage.setItem("user_id", res.data["id"])
+          localStorage.setItem("is_admin", res.data["admin"])
           localStorage.setItem("jwt", res.data["token"])
+          localStorage.setItem("refresh_token", res.data["refresh_token"])
           localStorage.setItem("role", res.data["role"])
           localStorage.setItem("user_email", data.email)
           window.location = "/user"

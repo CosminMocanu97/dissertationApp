@@ -1,26 +1,16 @@
 import React, { useState } from 'react'
 import {
-    TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+    TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle
   }
     from '@material-ui/core'
 import { axiosWrapper, config } from "../../utils/axiosWrapper"
 import AddIcon from '@material-ui/icons/Add'
 import CloseIcon from '@material-ui/icons/Close'
 import '../../stylesheets/popoutForms.css'
-
-import IconButton from '@material-ui/core/IconButton';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { verifyToken } from '../../utils/verifyToken'
 
 function NewFolderPage(props) {
   const [folderName, setFolderName] = useState("")
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
   const [folderNameError, setFolderNameError] = useState("")
 
   //function that updates the state as the user types in the input
@@ -37,10 +27,6 @@ function NewFolderPage(props) {
         }
         break
 
-      case 'password':
-         setPassword(value) 
-        break
-
       default:
         break
     }
@@ -54,15 +40,17 @@ function NewFolderPage(props) {
     }
     else {
       const data = { 
-        folderName: folderName,
-        password : password
+        folderName: folderName
       }
       axiosWrapper.post("/new_folder", data, config)
         .then(result => {
           window.location = "/user"
         })
         .catch(error => {
-          if (error.response.status === 409) {
+          if (error.response.data.error === "jwtExpired") {
+            verifyToken("/user")
+          }
+          else if (error.response.status === 409) {
             setFolderNameError("There's already a folder with this name")
           }
           else if (error.response.status === 403) {
@@ -77,38 +65,11 @@ function NewFolderPage(props) {
 
   return (
     <Dialog open={true} className="popoutContainer">
-      <DialogTitle>Create a new folder</DialogTitle>
-      <DialogContentText>
-        Please type the folder name:
-        </DialogContentText>
+      <DialogTitle>Create workspace</DialogTitle>
       <DialogContent>
 
         <TextField helperText={folderNameError} error={(folderNameError === "") ? false : true}
           value={folderName} onChange={handleChange} margin="dense" variant="outlined" label="Name" name="folderName" autoFocus  />
-
-        <FormControl variant="outlined" margin="dense">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <OutlinedInput
-            name="password"
-            id="outlined-adornment-password"
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            onChange={handleChange}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick= {() => setShowPassword(!showPassword)}
-                  edge="end"
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-            labelWidth={70}
-          />
-            <FormHelperText error={false} > In case you don't want to set a password, leave this field empty </FormHelperText>
-        </FormControl>
 
       </DialogContent>
       <DialogActions>

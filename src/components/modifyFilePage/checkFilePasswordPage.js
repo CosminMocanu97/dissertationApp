@@ -11,9 +11,12 @@ import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import '../../stylesheets/popoutForms.css'
 import { useParams } from 'react-router'
+import { verifyToken } from '../../utils/verifyToken'
 
-function NewFolderPage({ isLocked, setIsLocked }) {
+function CheckFilePassword({ isLocked, setIsLocked }) {
   const { folder_id } = useParams()
+  const { subfolder_id } = useParams()
+  const { file_id } = useParams()
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [passwordError, setPasswordError] = useState()
@@ -46,27 +49,31 @@ function NewFolderPage({ isLocked, setIsLocked }) {
       const data = { 
         password : password
       }
-      axiosWrapper.post("/user/" + folder_id, data, config)
+      axiosWrapper.post("/user/" + folder_id + "/" + subfolder_id + "/" + file_id, data, config)
         .then(result => {
-          sessionStorage.setItem("folder" + folder_id, false)
+          sessionStorage.setItem("file" + file_id, false)
           setIsLocked(false)
+          window.location = "/user/" + folder_id + "/" + subfolder_id + "/" + file_id
         })
         .catch(error => {
-          if (error.response.status === 401) {
-            alert('Password incorrect')
+          if (error.response.data.error === "jwtExpired") {
+            verifyToken( "/user/" + folder_id + "/" + subfolder_id + "/" + file_id)
+          }
+          else if (error.response.status === 401) {
+            setPasswordError('The provided password is not correct')
           } else {
             window.location = "/error"
           }
         })
     }
     
-  }, [setIsLocked, password, folder_id])
+  }, [setIsLocked, password, folder_id, subfolder_id, file_id])
 
   return (
     <Dialog open={true} className="popoutContainer">
-      <DialogTitle> <LockIcon className = "lockImg" /> <span> Password required </span>  </DialogTitle>
+      <DialogTitle> <LockIcon className = "lockImg" /> <span> File password required </span>  </DialogTitle>
       <DialogContentText>
-        Please type the password in order to access this folder:
+        Please type the password in order to view this file:
         </DialogContentText>
       <DialogContent>
 
@@ -96,11 +103,11 @@ function NewFolderPage({ isLocked, setIsLocked }) {
         
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" color="primary" startIcon={<CloseIcon/>} onClick={() => window.location = "/user"}> Close </Button>
+        <Button variant="contained" color="primary" startIcon={<CloseIcon/>} onClick={() => window.location = "/user/" + folder_id + "/" + subfolder_id}> Close </Button>
         <Button variant="contained" color="primary" startIcon={<VerifiedUserIcon/>} onClick={handleSubmit}> Verify </Button>
       </DialogActions>
     </Dialog>
   )
 }
 
-export default NewFolderPage
+export default CheckFilePassword

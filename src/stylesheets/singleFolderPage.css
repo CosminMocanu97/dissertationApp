@@ -24,25 +24,23 @@
   width: 100%;
   padding-left: 7%;
   padding-right: 7%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+
 }
 .fileContainer .sectionTitle {
   font-family: 'Staatliches', cursive;
   padding-top: 80px;
   padding-left: 7%;
   padding-right: 7%;
-  font-size: 24px;
+  font-size: 22px;
   margin-bottom: 15px;
   margin-left: 2px;
 }
 .fileContainer .sectionTitlePDF {
   font-family: 'Staatliches', cursive;
-  padding-top: 50px;
+  padding-top: 35px;
   padding-left: 7%;
   padding-right: 7%;
-  font-size: 24px;
+  font-size: 22px;
   margin-bottom: 15px;
   margin-left: 2px;
 }

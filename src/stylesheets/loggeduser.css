@@ -30,7 +30,7 @@
 }
 .folderDetails .MuiButton-root {
   width:20vw;
-  height:40px;
+  height:50px;
   margin-right: 10px;
   justify-content: left;
   text-transform: none;
@@ -40,6 +40,7 @@
   margin-bottom: 20px;
 }
 .folderDetails .singleFolderDiv .folderName {
+  font-size:17px;
   white-space: nowrap;
   overflow:hidden;
   text-overflow: ellipsis;
@@ -49,9 +50,12 @@
   padding-top: 80px;
   padding-left: 7%;
   padding-right: 7%;
-  font-size: 24px;
+  font-size: 22px;
   margin-bottom: 10px;
   margin-left: 2px;
+}
+.appContainer span {
+  font-weight: bold;
 }
 @media only screen and (max-width: 991.92px) {
   .folderDetails {
